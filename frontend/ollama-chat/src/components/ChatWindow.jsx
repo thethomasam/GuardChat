@@ -33,14 +33,35 @@ function ChatWindow({ id, onClose }) {
           messages: [...messages, newMessage]
         }),
       });
-      console.log(response.message.content);
+
       const data = await response.json();
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data.message.content
-      }]);
+      console.log('Response from server:', data);
+
+      // Check if we have a valid response with content
+      if (data && data?.response?.message?.content) {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: data.response.message.content
+        }]);
+      } else if (data) {  // Direct message format
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: data.message.content
+        }]);
+      } else {
+        console.error('Invalid response format:', data);
+        // Optionally show an error message to the user
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: 'Sorry, I encountered an error processing your request.'
+        }]);
+      }
     } catch (error) {
       console.error('Error:', error);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, an error occurred while processing your request.'
+      }]);
     } finally {
       setIsLoading(false);
     }

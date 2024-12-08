@@ -33,19 +33,18 @@ class ChatRequest(BaseModel):
 async def chat(request: ChatRequest):
     try:
         client = Client(
-            host='http://localhost:11434',
+            host='http://localhost:11435',
             headers={'x-some-header': 'some-value'}
                 )
         response = client.chat(model=request.model, messages=[
             {
-                    'role': 'user',
+                'role': 'user',
                     'content': 'Why is the sky blue?',
                 },
-            ])
+        ])
             
-        response.raise_for_status()
-          
-        return response.json()
+
+        return response
     except httpx.HTTPError as e:
         raise HTTPException(status_code=500, detail=f"Ollama API error: {str(e)}")
 
