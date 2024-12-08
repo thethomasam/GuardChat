@@ -1,0 +1,14 @@
+2024-12-08 18:56:16 - api - INFO - model='llama2' messages=[Message(role='user', content='dsds'), Message(role='user', content='sdsds')]
+2024-12-08 18:56:29 - api - INFO - model='llama2' messages=[Message(role='user', content='sds')]
+2024-12-08 18:57:24 - api - INFO - model='llama2' messages=[Message(role='user', content='dsds')]
+2024-12-08 19:01:52 - api - INFO - model='llama2' messages=[Message(role='user', content='sss')]
+2024-12-08 19:01:52 - api - DEBUG - <Response [404 Not Found]>
+2024-12-08 19:11:36 - api - INFO - model='llama2' messages=[Message(role='user', content='ss')]
+2024-12-08 19:11:37 - api - DEBUG - <Response [404 Not Found]>
+2024-12-08 19:13:08 - api - INFO - model='llama3:8b' messages=[Message(role='user', content='fsfs')]
+2024-12-08 19:13:26 - api - INFO - model='llama3:8b' messages=[Message(role='user', content='hi')]
+2024-12-08 19:14:38 - api - INFO - [Message(role='user', content='dsds')]
+2024-12-08 19:16:00 - api - INFO - [Message(role='user', content='dsds')]
+2024-12-08 19:17:08 - api - INFO - llama3:8b
+2024-12-08 19:17:17 - api - DEBUG - <Response [200 OK]>
+2024-12-08 19:17:57 - api - INFO - llama3:8b
