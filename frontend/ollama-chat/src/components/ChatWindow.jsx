@@ -1,11 +1,9 @@
 // src/components/ChatWindow.jsx
 import React, { useState, useRef, useEffect } from 'react';
 
-function ChatWindow({ id, onClose }) {
-  const [messages, setMessages] = useState([]);
+function ChatWindow({ id, onClose, updateModel ,messages = [], model = 'llama3:8b', isLoading = false }){
+
   const [input, setInput] = useState('');
-  const [model, setModel] = useState('llama3:8b');
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -16,55 +14,8 @@ function ChatWindow({ id, onClose }) {
     scrollToBottom();
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
-    const newMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, newMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('http://localhost:8000/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model,
-          messages: [...messages, newMessage]
-        }),
-      });
-
-      const data = await response.json();
-      console.log('Response from server:', data);
-
-      // Check if we have a valid response with content
-      if (data && data?.response?.message?.content) {
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: data.response.message.content
-        }]);
-      } else if (data) {  // Direct message format
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: data.message.content
-        }]);
-      } else {
-        console.error('Invalid response format:', data);
-        // Optionally show an error message to the user
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: 'Sorry, I encountered an error processing your request.'
-        }]);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'Sorry, an error occurred while processing your request.'
-      }]);
-    } finally {
-      setIsLoading(false);
-    }
+  const changeModel = (model) => {
+    updateModel(model);
   };
 
   return (
@@ -72,7 +23,7 @@ function ChatWindow({ id, onClose }) {
       <div className="flex items-center justify-between px-4 py-2 border-b">
         <select
           value={model}
-          onChange={(e) => setModel(e.target.value)}
+          onChange={(e) => changeModel(e.target.value)}
           className="text-sm border rounded p-1"
         >
           <option value="phi3.5:latest">Phi3</option>
@@ -112,7 +63,7 @@ function ChatWindow({ id, onClose }) {
         )}
         <div ref={messagesEndRef} />
       </div>
-
+{/* 
       <div className="p-4 border-t">
         <div className="flex gap-2">
           <input
@@ -130,7 +81,7 @@ function ChatWindow({ id, onClose }) {
             Send
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
